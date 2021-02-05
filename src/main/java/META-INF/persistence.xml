@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
+  <persistence-unit name="NewPersistenceUnit">
+    <class>id.co.bni.ets.refund_online.model.entity.Scheduler</class>
+    <class>id.co.bni.ets.refund_online.model.entity.History</class>
+    <class>id.co.bni.ets.refund_online.model.entity.Data</class>
+    <class>id.co.bni.ets.refund_online.model.entity.Payrollstat</class>
+    <class>id.co.bni.ets.refund_online.model.entity.RefundDataArchive</class>
+    <class>id.co.bni.ets.refund_online.model.entity.DebitData</class>
+    <class>id.co.bni.ets.refund_online.model.entity.DebitDataArchive</class>
+    <class>id.co.bni.ets.refund_online.repository.DebitDataArchiveRepository</class>
+    <class>id.co.bni.ets.complain_online.model.Customer</class>
+    <class>id.co.bni.ets.complain_online.model.Card</class>
+    <class>id.co.bni.ets.complain_online.model.Complain</class>
+  </persistence-unit>
+</persistence>

@@ -1,0 +1,70 @@
+twitter4j:
+    debug: true
+    oauth:
+        consumerKey: OxgOkyueQX6Ib04NwnaGB1orH
+        consumerSecret: BgFGJCRjvOnEME0IsUIdUN8troQ54XI7ywca04fJIFq57RoSu2
+        accessToken: 504221983-qTorjghdY2R3WPOEBHwvbM9wAWpxfpriLuA40e6l
+        accessTokenSecret: eHsjTVsPrEZPSRqryB4BhnDbApTxsZIR98uBjycENUhzK
+logging:
+  level:
+    org:
+      #   for debug purpose set to DEBUG and binder TRACE, otherwise INFO
+      hibernate:
+        SQL: info
+        type:
+          descriptor:
+            sql:
+              BasicBinder: info
+    ROOT: info
+
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    jdbc-url: jdbc:sqlserver://10.70.152.54:1433;databaseName=complain_online
+    username: sa
+    password: Uat46
+  datasource-base:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    jdbc-url: jdbc:sqlserver://10.70.152.54:1433;databaseName=ccms_base
+    username: sa
+    password: Uat46
+  #    for init project only when schema.sql is available
+  #    initialization-mode: always
+  jmx:
+    default-domain: ccmsApiRefundOnlineDomain
+  jpa:
+    properties:
+      hibernate.hbm2ddl: none
+      hibernate.physical_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      hibernate.dialect: org.hibernate.dialect.SQLServer2012Dialect
+    #   for debug purpose set to true
+    show-sql: false
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        one-indexed-parameters: true 
+  mail:
+      host: smtp.gmail.com
+      port: 587
+      username: bootcampbni@gmail.com
+      password: P4$$word
+      properties.mail.smtp.auth: true
+      properties.mail.smtp.starttls.enable: true
+      
+security:
+  oauth2:
+    client:
+      client-id: core_client
+      client-secret: "@C0r3 Cl13nt"
+    resource:
+      token-info-uri: http://localhost:8080/ccms-api/oauth/check_token
+      id: refund_online_resource
+      user-info-uri: http://localhost:8080/ccms-api/oauth/profile/me
+      prefer-token-info: false
+
+# --- server if jar
+server:
+  port: 8081
+  servlet:
+    context-path: /ccms-api/app

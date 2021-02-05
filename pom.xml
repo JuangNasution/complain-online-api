@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>complain-online</artifactId>
+    <version>1.0.1.RELEASE</version>
+    <name>complain-online</name>
+    <description>Refund Online sever</description>
+    <packaging>war</packaging>
+
+    <parent>
+        <groupId>id.co.bni.ets</groupId>
+        <artifactId>parent-tomcat</artifactId>
+        <version>1.0.1.RELEASE</version>
+        <relativePath>../parent-tomcat</relativePath>
+    </parent>
+
+    <properties>
+        <lib.version>1.0.1.RELEASE</lib.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+            <version>2.4.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>7.4.1.jre8</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.15</version>
+        </dependency>
+        <dependency>
+            <groupId>id.co.bni.ets</groupId>
+            <artifactId>lib</artifactId>
+            <version>${lib.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.twitter4j</groupId>
+            <artifactId>twitter4j-core</artifactId>
+            <version>4.0.7</version>
+        </dependency>
+    </dependencies>
+    
+
+</project>
