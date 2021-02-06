@@ -46,8 +46,9 @@ public class ComplainService {
     private static final String DATE = "TANGGAL COMPLAIN";
     private static final String DONE_DATE = "TANGGAL RESPONSE";
     private static final String CARD_NUMBER = "NOMOR KARTU";
+    private static final String STATUS = "STATUS";
     private static final String[] HEADER = {NO_KOMPLAIN, NASABAH_NAME, NASABAH_EMAIL, COMPLAIN_DETAIL,
-        COMPLAIN_RESPONSE, DATE, DONE_DATE, CARD_NUMBER};
+        COMPLAIN_RESPONSE, DATE, DONE_DATE, CARD_NUMBER, STATUS};
 
     private final ComplainRepository complainRepository;
     private final CustomerRepository customerRepository;
@@ -73,6 +74,13 @@ public class ComplainService {
                 pageable);
     }
 
+    public Page<Complain> getExportAtm(Date fromDate, Date toDate, String category, Pageable pageable) {
+        java.sql.Date fromDateSql = new java.sql.Date(fromDate.getTime());
+        java.sql.Date toDateSql = new java.sql.Date(toDate.getTime());
+        return complainRepository.findByLoadDateBetween(fromDateSql, toDateSql, category,
+                pageable);
+    }
+
     public Complain getDetailComplain(Long id, String noComplain) {
         Complain complain = complainRepository.findById(noComplain).get();
         complain.setCardNumber(cardRepository.findById(complain.getCardId()).get().getCardNumber());
@@ -86,7 +94,9 @@ public class ComplainService {
     }
 
     public int findCustomerById(Long id) {
-        User user = userRepository.findById(id).get();
+        System.out.println("TESTTTT" + id);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "id not found."));
         return customerRepository.findByEmail(user.getUsername()).getId();
     }
 
@@ -114,10 +124,10 @@ public class ComplainService {
         complainRepository.save(complain);
     }
 
-    public void responseComplain(String noComplain, String complainResponse) {
+    public void responseComplain(String noComplain, Complain c) {
         Complain complain = complainRepository.findById(noComplain).get();
         Customer customer = customerRepository.findById(complain.getCustomerId()).get();
-        complain.setComplainResponse(complainResponse);
+        complain.setComplainResponse(c.getComplainResponse());
         complain.setDoneDate(new Date());
         complain.setStatus(1);
 //        customerService.sendMail(customer.getEmail());
@@ -129,9 +139,11 @@ public class ComplainService {
                 .format(new java.util.Date()) + FORMAT_EXCEL;
     }
 
-    public byte[] getReport() {
+    public byte[] getReport(Date fromDate, Date toDate, String category) {
+        java.sql.Date fromDateSql = new java.sql.Date(fromDate.getTime());
+        java.sql.Date toDateSql = new java.sql.Date(toDate.getTime());
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        List<Complain> complains = (List) complainRepository.findAll();
+        List<Complain> complains = (List) complainRepository.downloadAtm(fromDateSql, toDateSql, category);
         Workbook workbook = new XSSFWorkbook();
         // Create a Sheet
         Sheet sheet = workbook.createSheet();
@@ -171,7 +183,7 @@ public class ComplainService {
                         break;
                     case NASABAH_NAME:
                         row.createCell(cellNum)
-                                .setCellValue(sdf.format(customer.getName()));
+                                .setCellValue(customer.getName());
                         cellNum++;
                         break;
                     case NASABAH_EMAIL:
@@ -181,22 +193,42 @@ public class ComplainService {
                         break;
                     case COMPLAIN_DETAIL:
                         row.createCell(cellNum)
-                                .setCellValue(sdf.format(complain.getComplainDetail()));
+                                .setCellValue(complain.getComplainDetail());
                         cellNum++;
                         break;
                     case COMPLAIN_RESPONSE:
-                        row.createCell(cellNum)
-                                .setCellValue(complain.getComplainDetail());
+                        if (complain.getComplainDetail() != null) {
+                            row.createCell(cellNum)
+                                    .setCellValue(complain.getComplainDetail());
+                        } else {
+                            row.createCell(cellNum)
+                                    .setCellValue("-");
+                        }
                         cellNum++;
                         break;
                     case DATE:
                         row.createCell(cellNum)
-                                .setCellValue(complain.getCreatedDate());
+                                .setCellValue(complain.getCreatedDate().toString());
+                        cellNum++;
+                        break;
+                    case DONE_DATE:
+                        if (complain.getDoneDate() != null) {
+                            row.createCell(cellNum)
+                                    .setCellValue(complain.getDoneDate().toString());
+                        } else {
+                            row.createCell(cellNum)
+                                    .setCellValue("-");
+                        }
                         cellNum++;
                         break;
                     case CARD_NUMBER:
                         row.createCell(cellNum)
                                 .setCellValue(cardRepository.findById(complain.getCardId()).get().getCardNumber());
+                        cellNum++;
+                        break;
+                    case STATUS:
+                        row.createCell(cellNum)
+                                .setCellValue(complain.getStatus() == 1 ? "Sukses" : "OnProgress");
                         cellNum++;
                         break;
                     default:

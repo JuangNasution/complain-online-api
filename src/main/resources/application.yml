@@ -25,7 +25,7 @@ spring:
     password: Uat46
   datasource-base:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    jdbc-url: jdbc:sqlserver://10.70.152.54:1433;databaseName=ccms_base
+    jdbc-url: jdbc:sqlserver://10.70.152.54:1433;databaseName=complain_online_base
     username: sa
     password: Uat46
   #    for init project only when schema.sql is available
