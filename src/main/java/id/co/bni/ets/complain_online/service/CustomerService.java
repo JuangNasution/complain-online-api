@@ -50,7 +50,6 @@ public class CustomerService {
 
     public void sendMail(String email) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        //mailMessage.setFrom("bootcampbni@gmail.com");
         mailMessage.setTo(email);
         mailMessage.setSubject("Verification Email");
         mailMessage.setText("test verification");

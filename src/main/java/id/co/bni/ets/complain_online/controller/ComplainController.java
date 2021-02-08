@@ -2,6 +2,7 @@ package id.co.bni.ets.complain_online.controller;
 
 import id.co.bni.ets.complain_online.model.Card;
 import id.co.bni.ets.complain_online.model.Complain;
+import id.co.bni.ets.complain_online.model.ComplainTwitter;
 import id.co.bni.ets.complain_online.model.MentionDetail;
 import id.co.bni.ets.complain_online.service.ComplainService;
 import id.co.bni.ets.complain_online.service.TwitterService;
@@ -53,10 +54,23 @@ public class ComplainController {
         return complainService.getComplain(UserIdUtil.getUserId(authentication), searchTerm, pageable);
     }
 
+    @PostMapping
+    public ApiResponse<?> createComplain(@Valid @RequestBody Complain complain, OAuth2Authentication authentication) {
+        complainService.createComplainApp(UserIdUtil.getUserId(authentication), complain);
+        return ApiResponse.apiOk("sukses");
+    }
+
+    @PutMapping("/{id}")
+    public ApiResponse<?> updateComplain(@Valid @PathVariable String id,
+            @RequestBody Complain complain) {
+        complainService.responseComplainApp(id, complain);
+        return ApiResponse.apiOk("suksesk");
+    }
+
     @GetMapping("/response")
     public Page<Complain> getResponse(@RequestParam(required = false) String searchTerm,
             @RequestParam(required = false) String category, Pageable pageable) {
-        return complainService.getComplainAtm(searchTerm, category, pageable);
+        return complainService.getComplainApp(searchTerm, category, pageable);
     }
 
     @GetMapping("/export")
@@ -65,25 +79,12 @@ public class ComplainController {
             @RequestParam(required = false)
             @DateTimeFormat(pattern = "MM-dd-yyyy") Date toDate,
             @RequestParam(required = false) String category, Pageable pageable) {
-        return complainService.getExportAtm(fromDate, toDate, category, pageable);
+        return complainService.getExportApp(fromDate, toDate, category, pageable);
     }
 
     @GetMapping("/{id}")
     public ApiResponse<Complain> getComplainDetail(@Valid @PathVariable String id, OAuth2Authentication authentication) {
-        return ApiResponse.apiOk(complainService.getDetailComplain(UserIdUtil.getUserId(authentication), id));
-    }
-
-    @PostMapping
-    public ApiResponse<?> createComplain(@Valid @RequestBody Complain complain, OAuth2Authentication authentication) {
-        complainService.createComplain(UserIdUtil.getUserId(authentication), complain);
-        return ApiResponse.apiOk("sukses");
-    }
-
-    @PutMapping("/{id}")
-    public ApiResponse<?> updateComplain(@Valid @PathVariable String id,
-            @RequestBody Complain complain) {
-        complainService.responseComplain(id, complain);
-        return ApiResponse.apiOk("suksesk");
+        return ApiResponse.apiOk(complainService.getDetailComplainApp(UserIdUtil.getUserId(authentication), id));
     }
 
     @GetMapping("/card")
@@ -97,7 +98,7 @@ public class ComplainController {
             @RequestParam(required = false)
             @DateTimeFormat(pattern = "MM-dd-yyyy") Date toDate,
             @RequestParam(required = false) String category) {
-        String fileName = complainService.getFileName();
+        String fileName = complainService.getFileName(category);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
@@ -116,13 +117,38 @@ public class ComplainController {
         return twitterService.getMention();
     }
 
-    @GetMapping("/dm")
-    public List<twitter4j.DirectMessage> dm() throws TwitterException {
-        return twitterService.directMessage();
+    @GetMapping("/twitter/{id}")
+    public ApiResponse<ComplainTwitter> getComplainDetailTwt(@Valid @PathVariable String id) {
+        return ApiResponse.apiOk(complainService.getDetailComplainTwt(id));
     }
 
-    @GetMapping("/sendDm")
-    public String sendDm(@RequestParam String name) throws TwitterException {
-        return twitterService.sendDirectMessage(name);
+    @PostMapping("/twitter")
+    public ApiResponse<?> createComplainTwt(@Valid @RequestBody ComplainTwitter complain) {
+        complainService.createComplainTwt(complain);
+        return ApiResponse.apiOk("sukses");
     }
+
+    @GetMapping("/response-twitter")
+    public Page<ComplainTwitter> getResponseTwt(@RequestParam(required = false) String searchTerm,
+            @RequestParam(required = false) String category, Pageable pageable) {
+        return complainService.getComplainTwt(searchTerm, category, pageable);
+    }
+
+    @PutMapping("twitter/{id}")
+    public ApiResponse<?> updateComplainTwt(@Valid @PathVariable String id,
+            @RequestBody ComplainTwitter complain) {
+        complainService.responseComplainTwt(id, complain);
+        return ApiResponse.apiOk("sukses");
+    }
+
+    @PutMapping("drop-twitter/{id}")
+    public ApiResponse<?> dropTwt(@Valid @PathVariable String id) {
+        complainService.dropTwt(id);
+        return ApiResponse.apiOk("sukses");
+    }
+
+//    @GetMapping("/sendDm")
+//    public String sendDm(@RequestParam String name) throws TwitterException {
+//        return twitterService.sendDirectMessage(name);
+//    }
 }

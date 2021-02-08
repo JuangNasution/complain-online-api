@@ -1,10 +1,10 @@
 twitter4j:
     debug: true
     oauth:
-        consumerKey: OxgOkyueQX6Ib04NwnaGB1orH
-        consumerSecret: BgFGJCRjvOnEME0IsUIdUN8troQ54XI7ywca04fJIFq57RoSu2
-        accessToken: 504221983-qTorjghdY2R3WPOEBHwvbM9wAWpxfpriLuA40e6l
-        accessTokenSecret: eHsjTVsPrEZPSRqryB4BhnDbApTxsZIR98uBjycENUhzK
+        consumerKey: YGHx7t9BpIwcEWWsySfL9tXHe
+        consumerSecret: Y6Gn8ByRwvX2T8tnNbeSzznG4Hj2uHICqEhdV3Yuyaa46n7pA6
+        accessToken: 1358286955981639683-uUUfjCKb8Lnv9kOMTQW1cM6x5ouWYh
+        accessTokenSecret: MAEb8nJUkCNxguoxYXDKX5IPGd54GUP7BWGgPGF3N6wki
 logging:
   level:
     org:

@@ -12,5 +12,7 @@
     <class>id.co.bni.ets.complain_online.model.Customer</class>
     <class>id.co.bni.ets.complain_online.model.Card</class>
     <class>id.co.bni.ets.complain_online.model.Complain</class>
+    <class>id.co.bni.ets.complain_online.model.ComplainTwitter</class>
+    <class>id.co.bni.ets.complain_online.model.ProcessedTwitter</class>
   </persistence-unit>
 </persistence>

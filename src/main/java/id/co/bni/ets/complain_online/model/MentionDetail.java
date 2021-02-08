@@ -8,10 +8,19 @@ import java.util.Date;
  */
 public class MentionDetail {
 
+    private String id;
     private String text;
     private String user;
     private String image;
     private Date createdAt;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getText() {
         return text;
